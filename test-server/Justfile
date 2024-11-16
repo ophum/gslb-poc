@@ -1,0 +1,19 @@
+help:
+    just --list
+
+run:
+    go run main.go
+
+list:
+    #!/bin/bash
+    echo "ADDR"
+    curl -s http://localhost:8081/servers | jq -r '. | @tsv'
+
+start ADDR PORT:     
+    curl -X POST -H "Content-Type: application/json" http://localhost:8081/servers -d '{"addr":"{{ ADDR }}", "port": {{ PORT }}}'
+
+stop ADDR PORT:
+    curl -X DELETE http://localhost:8081/servers/{{ADDR}}:{{PORT}}
+
+lookup:
+    dig @127.0.0.1 -p 8053 www.example.com
